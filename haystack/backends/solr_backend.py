@@ -48,8 +48,10 @@ class SearchBackend(BaseSearchBackend):
         self.conn = Solr(settings.HAYSTACK_SOLR_URL, timeout=timeout)
         self.log = logging.getLogger('haystack')
 
-    def update(self, index, iterable, commit=True):
+    def update(self, index, iterable):
         docs = []
+
+        commit = getattr(settings, 'HAYSTACK_SOLR_AUTOCOMMIT', False)
 
         for obj in iterable:
             try:
